@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金礦計畫</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://img.freepik.com/free-photo/coins-gold-bars-scattered-table_181624-59753.jpg?t=st=1743657521~exp=1743661121~hmac=a5eedf9f37e449613e4419afb6051db3cc2b5064bb6f3ff2376e165fff1b2d68&w=1380') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #eef;
+            border-radius: 5px;
+            white-space: pre-line;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>金礦計畫</h2>
+        <label for="capital">本金：</label>
+        <input type="number" id="capital" value="1000">
+        <label for="targetLots">目標倉數：</label>
+        <input type="number" id="targetLots" value="1">
+        <button onclick="calculate()">計算</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            let capital = parseFloat(document.getElementById('capital').value);
+            let targetLots = parseInt(document.getElementById('targetLots').value);
+            let lots = [];
+            let initialLots = Math.floor(capital / 1000); // 初始倉位數
+            
+            for (let i = 0; i < initialLots; i++) {
+                lots.push({ amount: 1000 });
+            }
+            
+            let weeks = 0;
+            let resultText = `初始拆分 ${initialLots} 個倉位，每個 1000\n`;
+            
+            while (lots.length < targetLots) {
+                weeks++;
+                resultText += `第 ${weeks} 周:\n`;
+                
+                for (let i = 0; i < lots.length; i++) {
+                    lots[i].amount += 400;
+                }
+                
+                resultText += lots.map((lot, index) => `倉位 ${index + 1}: ${lot.amount}`).join('\n') + '\n';
+                
+                let newLots = [];
+                for (let i = 0; i < lots.length; i++) {
+                    if (lots[i].amount >= 2000) {
+                        newLots.push({ amount: 1000 }, { amount: 1000 });
+                        resultText += `倉位 ${i + 1} 拆分為兩個 1000\n`;
+                    } else {
+                        newLots.push(lots[i]);
+                    }
+                }
+                lots = newLots;
+                
+                resultText += `目前累積倉數: ${lots.length}\n`;
+            }
+            
+            resultText = `達成 ${targetLots} 倉需要 ${weeks} 周\n` + resultText;
+            document.getElementById('result').innerText = resultText;
+
+            // 自動滾動到最上方
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
