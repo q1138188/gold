@@ -72,12 +72,12 @@
         <h2>金礦計畫</h2>
         <label for="capital">本金：</label>
         <input type="number" id="capital" value="1000">
-        <label for="initialLots">原始持有艙位：</label>
-        <input type="number" id="initialLots" value="1">
+        <label for="initialLots">原始持有倉位：</label>
+        <input type="number" id="initialLots" value="2">
         <label for="dailyProfit">每日獲利：</label>
-        <input type="number" id="dailyProfit" value="20">
+        <input type="number" id="dailyProfit" value="100">
         <label for="targetLots">目標倉數：</label>
-        <input type="number" id="targetLots" value="2">
+        <input type="number" id="targetLots" value="4">
         <button onclick="calculate()">計算</button>
         <div class="result" id="result"></div>
     </div>
@@ -89,29 +89,31 @@
             let dailyProfit = parseFloat(document.getElementById('dailyProfit').value);
             let targetLots = parseInt(document.getElementById('targetLots').value);
             let lots = [];
-            
+
+            // 初始倉位，每個倉位擁有完整本金
             for (let i = 0; i < initialLots; i++) {
-                lots.push({ amount: capital / initialLots });
+                lots.push({ amount: capital });
             }
-            
+
             let days = 0;
-            let resultText = `初始持有 ${initialLots} 個倉位，每個 ${capital / initialLots}\n`;
-            
+            let resultText = `初始持有 ${initialLots} 個倉位，每個 ${capital}\n`;
+
             while (lots.length < targetLots) {
                 days++;
                 resultText += `第 ${days} 天:\n`;
-                
+
+                // 每個倉位都增加每日獲利
                 for (let i = 0; i < lots.length; i++) {
                     lots[i].amount += dailyProfit;
                 }
-                
+
                 resultText += lots.map((lot, index) => `倉位 ${index + 1}: 本金 ${lot.amount}`).join('\n') + '\n';
-                
+
                 let newLots = [];
                 for (let i = 0; i < lots.length; i++) {
-                    if (lots[i].amount >= capital * 2 / initialLots) {
-                        newLots.push({ amount: capital / initialLots }, { amount: capital / initialLots });
-                        resultText += `倉位 ${i + 1} 翻倍，新增 1 個艙位\n`;
+                    if (lots[i].amount >= capital * 2) {
+                        newLots.push({ amount: capital }, { amount: capital }); // 正確翻倍
+                        resultText += `倉位 ${i + 1} 翻倍，新增 1 個倉位\n`;
                     } else {
                         newLots.push(lots[i]);
                     }
@@ -119,7 +121,7 @@
                 lots = newLots;
                 resultText += `目前累積倉數: ${lots.length}\n`;
             }
-            
+
             resultText = `達成 ${targetLots} 倉需要 ${days} 交易日\n` + resultText;
             document.getElementById('result').innerText = resultText;
             window.scrollTo(0, 0);
