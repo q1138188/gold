@@ -21,8 +21,8 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-            width: 90%;
+            max-width: 90%;
+            width: 400px;
             text-align: center;
             overflow-y: auto;
             max-height: 90vh;
@@ -41,6 +41,7 @@
             margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px;
         }
         button {
             margin-top: 15px;
@@ -64,6 +65,7 @@
             white-space: pre-line;
             max-height: 300px;
             overflow-y: auto;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -72,6 +74,8 @@
         <h2>金礦計畫</h2>
         <label for="capital">本金：</label>
         <input type="number" id="capital" value="1000">
+        <label for="weeklyProfit">每周獲利：</label>
+        <input type="number" id="weeklyProfit" value="400">
         <label for="targetLots">目標倉數：</label>
         <input type="number" id="targetLots" value="1">
         <button onclick="calculate()">計算</button>
@@ -81,9 +85,9 @@
     <script>
         function calculate() {
             let capital = parseFloat(document.getElementById('capital').value);
+            let weeklyProfit = parseFloat(document.getElementById('weeklyProfit').value);
             let targetLots = parseInt(document.getElementById('targetLots').value);
             let lots = [{ amount: capital }]; // 初始倉位計入
-            let weeklyProfit = 400;
             let weeks = 0;
             let resultText = `初始本金: ${capital}\n`;
             
