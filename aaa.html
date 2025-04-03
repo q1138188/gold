@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
@@ -82,44 +82,42 @@
         function calculate() {
             let capital = parseFloat(document.getElementById('capital').value);
             let targetLots = parseInt(document.getElementById('targetLots').value);
-            let lots = [];
-            let initialLots = Math.floor(capital / 1000); // 初始倉位數
-            
-            for (let i = 0; i < initialLots; i++) {
-                lots.push({ amount: 1000 });
-            }
-            
+            let lots = [{ amount: capital }]; // 初始倉位計入
+            let weeklyProfit = 400;
             let weeks = 0;
-            let resultText = `初始拆分 ${initialLots} 個倉位，每個 1000\n`;
+            let resultText = `初始本金: ${capital}\n`;
             
             while (lots.length < targetLots) {
                 weeks++;
                 resultText += `第 ${weeks} 周:\n`;
                 
+                // 計算每個倉位的利潤
                 for (let i = 0; i < lots.length; i++) {
-                    lots[i].amount += 400;
+                    lots[i].amount += weeklyProfit;
+                    resultText += `倉位 ${i + 1}: 本金增長至 ${Math.floor(lots[i].amount)}\n`;
                 }
                 
-                resultText += lots.map((lot, index) => `倉位 ${index + 1}: ${lot.amount}`).join('\n') + '\n';
-                
+                // 檢查是否有倉位翻倍
                 let newLots = [];
+                let newCount = 0;
                 for (let i = 0; i < lots.length; i++) {
-                    if (lots[i].amount >= 2000) {
-                        newLots.push({ amount: 1000 }, { amount: 1000 });
-                        resultText += `倉位 ${i + 1} 拆分為兩個 1000\n`;
-                    } else {
-                        newLots.push(lots[i]);
+                    if (lots[i].amount >= capital * 2) {
+                        newLots.push({ amount: capital }); // 新增倉位
+                        lots[i].amount = capital; // 原倉位歸零重新計算
+                        newCount++;
                     }
+                    newLots.push(lots[i]);
                 }
                 lots = newLots;
                 
-                resultText += `目前累積倉數: ${lots.length}\n`;
+                if (newCount > 0) {
+                    resultText += `翻倍: 新增 ${newCount} 倉，當前總倉數: ${lots.length}\n`;
+                }
             }
             
             resultText = `達成 ${targetLots} 倉需要 ${weeks} 周\n` + resultText;
             document.getElementById('result').innerText = resultText;
-
-            // 自動滾動到最上方
+            
             window.scrollTo(0, 0);
         }
     </script>
