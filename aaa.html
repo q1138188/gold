@@ -6,7 +6,7 @@
     <title>金礦計畫</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: url('https://img.freepik.com/free-photo/coins-gold-bars-scattered-table_181624-59753.jpg?t=st=1743657521~exp=1743661121~hmac=a5eedf9f37e449613e4419afb6051db3cc2b5064bb6f3ff2376e165fff1b2d68&w=1380') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
@@ -17,59 +17,69 @@
             height: 100vh;
         }
         .container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(255, 215, 0, 0.5);
+            max-width: 420px;
             width: 90%;
             text-align: center;
+            color: #FFD700;
             overflow-y: auto;
             max-height: 90vh;
         }
         h2 {
-            color: #333;
+            font-size: 24px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #FFD700;
+            padding-bottom: 10px;
         }
         label {
             display: block;
-            margin-top: 10px;
+            margin-top: 12px;
             font-weight: bold;
         }
         input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin-top: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid #FFD700;
             border-radius: 5px;
+            background: rgba(255, 215, 0, 0.1);
+            color: #FFD700;
+            font-size: 16px;
         }
         button {
-            margin-top: 15px;
-            padding: 10px;
+            margin-top: 20px;
+            padding: 12px;
             width: 100%;
-            background-color: #007BFF;
-            color: white;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: black;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
         }
         button:hover {
-            background-color: #0056b3;
+            background: linear-gradient(45deg, #FFA500, #FFD700);
         }
         .result {
             margin-top: 20px;
-            padding: 10px;
-            background: #eef;
+            padding: 12px;
+            background: rgba(255, 215, 0, 0.1);
             border-radius: 5px;
             white-space: pre-line;
             max-height: 300px;
             overflow-y: auto;
+            text-align: left;
+            border: 1px solid #FFD700;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>金礦計畫</h2>
+        <h2>💰 金礦計畫 💰</h2>
         <label for="capital">本金：</label>
         <input type="number" id="capital" value="1000">
         <label for="initialLots">原始持有倉位：</label>
@@ -90,7 +100,6 @@
             let targetLots = parseInt(document.getElementById('targetLots').value);
             let lots = [];
 
-            // 初始倉位，每個倉位擁有完整本金
             for (let i = 0; i < initialLots; i++) {
                 lots.push({ amount: capital });
             }
@@ -102,7 +111,6 @@
                 days++;
                 resultText += `第 ${days} 天:\n`;
 
-                // 每個倉位都增加每日獲利
                 for (let i = 0; i < lots.length; i++) {
                     lots[i].amount += dailyProfit;
                 }
@@ -112,7 +120,7 @@
                 let newLots = [];
                 for (let i = 0; i < lots.length; i++) {
                     if (lots[i].amount >= capital * 2) {
-                        newLots.push({ amount: capital }, { amount: capital }); // 正確翻倍
+                        newLots.push({ amount: capital }, { amount: capital });
                         resultText += `倉位 ${i + 1} 翻倍，新增 1 個倉位\n`;
                     } else {
                         newLots.push(lots[i]);
